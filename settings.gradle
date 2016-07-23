@@ -1,0 +1,4 @@
+include ':app', ':android-libraries', ':android-libraries:library1', ':android-libraries:library2'
+project(':android-libraries').projectDir = new File("$rootProject.projectDir/android-libraries")
+project(':android-libraries:library1').projectDir = new File("$rootProject.projectDir/android-libraries/library1")
+project(':android-libraries:library2').projectDir = new File("$rootProject.projectDir/android-libraries/library2")

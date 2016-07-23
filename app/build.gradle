@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+evaluationDependsOn(":android-libraries")
+final APP_CONFIGURABLE_FIELD = "APP_CONFIGURABLE_FIELD"
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        applicationId "com.example.srokowski.maciej.androidcrossprojectconfig"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            buildConfigField "String", APP_CONFIGURABLE_FIELD, "\"APP_release\""
+        }
+        debug {
+            buildConfigField "String", APP_CONFIGURABLE_FIELD, "\"APP_debug\""
+        }
+        customBuildType1 {
+            buildConfigField "String", APP_CONFIGURABLE_FIELD, "\"APP_customBuildType1\""
+        }
+        customBuildType2 {
+            buildConfigField "String", APP_CONFIGURABLE_FIELD, "\"APP_customBuildType2\""
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile project(":android-libraries:library1")
+    compile project(":android-libraries:library2")
+}

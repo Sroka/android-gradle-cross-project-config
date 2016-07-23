@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+
+final LIBRARY_1_CONFIGURABLE_FIELD = "LIBRARY_1_CONFIGURABLE_FIELD"
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildTypes {
+        release{
+            buildConfigField "String", LIBRARY_1_CONFIGURABLE_FIELD, "\"LIBRARY_1_release\""
+        }
+        debug{
+            buildConfigField "String", LIBRARY_1_CONFIGURABLE_FIELD, "\"LIBRARY_1_debug\""
+        }
+        customBuildType1 {
+            buildConfigField "String", LIBRARY_1_CONFIGURABLE_FIELD, "\"LIBRARY_1_customBuildType1\""
+        }
+        customBuildType2 {
+            buildConfigField "String", LIBRARY_1_CONFIGURABLE_FIELD, "\"LIBRARY_1_customBuildType2\""
+        }
+    }
+}
+
+dependencies {
+    compile project(":android-libraries:library2")
+}

@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+    }
+}
+
+subprojects { project ->
+    apply plugin: 'com.android.library'
+    android.defaultPublishConfig = getProjectConfiguration(project)
+    android.variantFilter { variant ->
+        String currentModuleConfig = getProjectConfiguration(project)
+        if (!variant.buildType.name.equals(currentModuleConfig)) {
+            variant.setIgnore(true);
+        }
+    }
+}
+
+String getProjectConfiguration(Project project) {
+    List<List<String>> crossProjectConfigurations = new File("$rootProject.projectDir/android-libraries/cross-project-config.gradle")
+            .collect{it.replace("[", "")}
+            .collect{it.replace("]", "")}
+            .collect { line ->
+        line.tokenize(",").each {
+            it.trim()
+        }
+    }
+    if (crossProjectConfigurations.any { projectConfigTuple -> projectConfigTuple.size() != 2 }) {
+        throw new InvalidUserDataException("Wrong format of module configuration file")
+    }
+    if (!crossProjectConfigurations.any { projectConfigTuple -> projectConfigTuple.contains(project.name) }) {
+        throw new InvalidUserDataException("No config found for given project: $project.name.")
+    }
+    crossProjectConfigurations.find { projectConfigTuple -> projectConfigTuple.contains(project.name) }.get(1)
+}
